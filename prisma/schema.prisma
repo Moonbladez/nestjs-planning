@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id Int      @id @default(autoincrement())
+  earlyDelivery Boolean 
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  fromProjectId Int?     
+  toProjectId   Int?     
+  fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
+  toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
+}
+
+model Project {
+  id Int      @id @default(autoincrement())
+  name          String
+  region        Int?
+  latitude      String?
+  longitude     String?
+  fromOrders    Order[]  @relation("FromProject")
+  toOrders      Order[]  @relation("ToProject")
+}

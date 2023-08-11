@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional } from 'class-validator';
+import { VEHICLE_TYPE } from '@prisma/client';
+import {
+  IsBoolean,
+  IsDateString,
+  IsISO8601,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateOrderDto {
   //from project
@@ -27,4 +33,24 @@ export class CreateOrderDto {
     example: true,
   })
   earlyDelivery: boolean;
+
+  //date
+  @ApiProperty({
+    description: 'date of the order',
+    example: '2023-08-11T12:00:00.000Z',
+  })
+  @IsDateString()
+  @IsISO8601({
+    strict: true,
+  })
+  date: Date;
+
+  //vehicle type
+  @ApiProperty({
+    description: 'type of the vehicle',
+    enum: VEHICLE_TYPE,
+    required: false,
+  })
+  @IsOptional()
+  vehicleType: VEHICLE_TYPE;
 }

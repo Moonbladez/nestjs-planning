@@ -9,13 +9,15 @@ datasource db {
 
 model Order {
   id Int      @id @default(autoincrement())
-  earlyDelivery Boolean 
+  earlyDelivery Boolean
+  date          DateTime @db.Timestamp(6)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   fromProjectId Int?     
   toProjectId   Int?     
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
+  vehicleType   VEHICLE_TYPE?
 }
 
 model Project {
@@ -27,3 +29,15 @@ model Project {
   fromOrders    Order[]  @relation("FromProject")
   toOrders      Order[]  @relation("ToProject")
 }
+
+enum VEHICLE_TYPE {
+  Single 
+  Double
+  Semi
+  CarWithTrailer
+  SixxSix
+  HookLift
+}
+
+
+

@@ -7,7 +7,10 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 export class OrderService {
   constructor(private prisma: PrismaService) {}
 
-  checkProjectExistence = async (projectId: number, projectType: string) => {
+  checkProjectExistence = async (
+    projectId: number,
+    projectType: string,
+  ): Promise<void> => {
     if (projectId) {
       const project = await this.prisma.project.findUnique({
         where: {
@@ -25,7 +28,6 @@ export class OrderService {
 
   async create(createOrdertDto: CreateOrderDto) {
     const { fromProjectId, toProjectId } = createOrdertDto;
-    console.log(createOrdertDto);
 
     await Promise.all([
       this.checkProjectExistence(fromProjectId, 'From'),

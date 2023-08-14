@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ORDER_STATUS, VEHICLE_TYPE } from '@prisma/client';
+import { ORDER_STATUS, ORDER_TYPE, VEHICLE_TYPE } from '@prisma/client';
 import { IsBoolean, IsEnum, IsISO8601, IsOptional } from 'class-validator';
 
 export class CreateOrderDto {
@@ -56,4 +56,18 @@ export class CreateOrderDto {
   })
   @IsEnum(ORDER_STATUS)
   status: ORDER_STATUS;
+
+  @ApiProperty({
+    description: 'Number of vehicles used for order',
+    required: false,
+  })
+  @IsOptional()
+  numberOfVehicles?: number;
+
+  @ApiProperty({
+    description: 'Type of the order',
+    enum: ORDER_TYPE,
+  })
+  @IsEnum(ORDER_TYPE)
+  type: ORDER_TYPE;
 }

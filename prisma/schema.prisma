@@ -17,6 +17,7 @@ model Order {
   toProjectId   Int?     
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
+  status        ORDER_STATUS @map("status") @default(Created)
   vehicleType   VEHICLE_TYPE? @map("vehicle_type")
 }
 
@@ -38,6 +39,15 @@ enum VEHICLE_TYPE {
   SixxSix
   HookLift
 }
+
+enum ORDER_STATUS {
+  Created
+  UnderPlanning
+  Planned
+  Cancelled
+  Declined
+}
+
 
 
 

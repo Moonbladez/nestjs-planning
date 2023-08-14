@@ -8,8 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
+import { CreateProjectDto, UpdateProjectDto } from './dto';
 import { ProjectService } from './project.service';
 
 @Controller('project')

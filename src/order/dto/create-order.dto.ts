@@ -1,56 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { VEHICLE_TYPE } from '@prisma/client';
-import {
-  IsBoolean,
-  IsDateString,
-  IsISO8601,
-  IsOptional,
-} from 'class-validator';
+import { IsBoolean, IsEnum, IsISO8601, IsOptional } from 'class-validator';
 
 export class CreateOrderDto {
-  //from project
   @ApiProperty({
-    description: 'id of the project',
+    description: 'ID of the source project',
     required: false,
     example: 1,
   })
   @IsOptional()
-  fromProjectId: number;
+  fromProjectId?: number;
 
-  //to project
   @ApiProperty({
-    description: 'id of the project',
+    description: 'ID of the destination project',
     required: false,
     example: 2,
   })
   @IsOptional()
-  toProjectId: number;
+  toProjectId?: number;
 
-  // early delivery
-  @IsBoolean()
   @ApiProperty({
-    description: 'is early delivery required',
+    description: 'Indicates if early delivery is required',
     example: true,
   })
+  @IsBoolean()
   earlyDelivery: boolean;
 
-  //date
   @ApiProperty({
-    description: 'date of the order',
+    description: 'Date and time of the order',
     example: '2023-08-11T12:00:00.000Z',
   })
-  @IsDateString()
-  @IsISO8601({
-    strict: true,
-  })
+  @IsISO8601({ strict: true })
   date: Date;
 
-  //vehicle type
   @ApiProperty({
-    description: 'type of the vehicle',
+    description: 'Type of the vehicle used for delivery',
     enum: VEHICLE_TYPE,
     required: false,
   })
   @IsOptional()
-  vehicleType: VEHICLE_TYPE;
+  @IsEnum(VEHICLE_TYPE)
+  vehicleType?: VEHICLE_TYPE;
 }

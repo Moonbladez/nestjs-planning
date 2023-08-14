@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('Order example')
     .setDescription('The order API description')
     .setVersion('1.0')
+    .addTag('Assignment')
     .addTag('Orders')
     .addTag('Projects')
     .addTag('When')

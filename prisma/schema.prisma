@@ -7,47 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Assignment {
+  id      Int    @id @default(autoincrement())
+  orderId Int?
+  order   Order? @relation(fields: [orderId], references: [id])
+
+  type   ASSIGNMENT_TYPE?
+  status ASSIGNMENT_STATUS @default(UnderPlanning)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Order {
-  id                Int         @id @default(autoincrement())
-  status            ORDER_STATUS @map("status") @default(Created)
-  type              ORDER_TYPE
-  earlyDelivery     Boolean     @map("early_delivery")
-  date              DateTime    @db.Timestamp(6)
-  vehicleType       VEHICLE_TYPE? @map("vehicle_type")
-  numberOfVehicles  Int?
+  id               Int           @id @default(autoincrement())
+  status           ORDER_STATUS  @default(Created) @map("status")
+  type             ORDER_TYPE
+  earlyDelivery    Boolean       @map("early_delivery")
+  date             DateTime      @db.Timestamp(6)
+  vehicleType      VEHICLE_TYPE? @map("vehicle_type")
+  numberOfVehicles Int?
 
-  fromProjectId     Int?     
-  toProjectId       Int?   
-  fromProject       Project?   @relation("FromProject", fields: [fromProjectId], references: [id])
-  toProject         Project?   @relation("ToProject", fields: [toProjectId], references: [id])
+  fromProjectId Int?
+  toProjectId   Int?
+  fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
+  toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
-  whenId            Int? 
-  when              When?      @relation(fields: [whenId], references: [id])
+  whenId Int?
+  when   When? @relation(fields: [whenId], references: [id])
 
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Assignment Assignment[]
 }
 
 model Project {
-  id Int      @id @default(autoincrement())
-  name          String
-  region        Int?
-  latitude      String?
-  longitude     String?
-  fromOrders    Order[]  @relation("FromProject")
-  toOrders      Order[]  @relation("ToProject")
+  id         Int     @id @default(autoincrement())
+  name       String
+  region     Int?
+  latitude   String?
+  longitude  String?
+  fromOrders Order[] @relation("FromProject")
+  toOrders   Order[] @relation("ToProject")
 }
 
 model When {
-  id Int      @id @default(autoincrement())
-  from String?
-  to String?
-  type WHEN_TYPE 
+  id     Int       @id @default(autoincrement())
+  from   String?
+  to     String?
+  type   WHEN_TYPE
   orders Order[]
 }
 
+enum ASSIGNMENT_TYPE {
+  MassIn
+  MassOut
+  MassInternal
+  ContainerDeliver
+  ContainerCollect
+  ContainerEmptying
+  ContainerSwap
+}
+
+enum ASSIGNMENT_STATUS {
+  UnderPlanning
+  Approved
+  Started
+  Completed
+  NotDelivered
+  Cancelled
+  Deleted
+  VerifiedNotDelivered
+  Unavailable
+  Suggested
+  SuggestedAndApproved
+}
+
 enum VEHICLE_TYPE {
-  Single 
+  Single
   Double
   Semi
   CarWithTrailer
@@ -79,8 +116,3 @@ enum WHEN_TYPE {
   AfterFood
   Custom
 }
-
-
-
-
-

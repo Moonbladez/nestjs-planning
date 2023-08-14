@@ -42,8 +42,6 @@ export class OrderService {
   async create(createOrdertDto: CreateOrderDto) {
     const { fromProjectId, toProjectId, whenId } = createOrdertDto;
 
-    console.log(whenId);
-
     await Promise.all([
       this.checkWhenExistence(whenId),
       this.checkProjectExistence(fromProjectId, 'From'),

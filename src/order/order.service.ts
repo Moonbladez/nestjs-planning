@@ -25,10 +25,27 @@ export class OrderService {
     }
   };
 
+  checkWhenExistence = async (whenId: number): Promise<void> => {
+    if (whenId) {
+      const when = await this.prisma.when.findUnique({
+        where: {
+          id: whenId,
+        },
+      });
+
+      if (!when) {
+        throw new NotFoundException(`When with id ${whenId} not found`);
+      }
+    }
+  };
+
   async create(createOrdertDto: CreateOrderDto) {
-    const { fromProjectId, toProjectId } = createOrdertDto;
+    const { fromProjectId, toProjectId, whenId } = createOrdertDto;
+
+    console.log(whenId);
 
     await Promise.all([
+      this.checkWhenExistence(whenId),
       this.checkProjectExistence(fromProjectId, 'From'),
       this.checkProjectExistence(toProjectId, 'To'),
     ]);
@@ -70,6 +87,7 @@ export class OrderService {
     await Promise.all([
       this.checkProjectExistence(updateOrderDto.fromProjectId, 'From'),
       this.checkProjectExistence(updateOrderDto.toProjectId, 'To'),
+      this.checkWhenExistence(updateOrderDto.whenId),
     ]);
 
     return this.prisma.order.update({

@@ -14,7 +14,9 @@ model Order {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   fromProjectId Int?     
-  toProjectId   Int?     
+  toProjectId   Int?   
+  when          When? @relation(fields: [whenId], references: [id]) 
+  whenId        Int? 
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
   status        ORDER_STATUS @map("status") @default(Created)
@@ -29,6 +31,14 @@ model Project {
   longitude     String?
   fromOrders    Order[]  @relation("FromProject")
   toOrders      Order[]  @relation("ToProject")
+}
+
+model When {
+  id Int      @id @default(autoincrement())
+  from String?
+  to String?
+  type WHEN_TYPE 
+  orders Order[]
 }
 
 enum VEHICLE_TYPE {
@@ -47,6 +57,15 @@ enum ORDER_STATUS {
   Cancelled
   Declined
 }
+
+enum WHEN_TYPE {
+  DuringTheDay
+  Morning
+  BeforeFood
+  AfterFood
+  Custom
+}
+
 
 
 

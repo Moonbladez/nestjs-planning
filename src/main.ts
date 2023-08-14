@@ -13,6 +13,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('Orders')
     .addTag('Projects')
+    .addTag('When')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

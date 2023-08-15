@@ -37,4 +37,18 @@ export class SharedService {
       }
     }
   }
+
+  async checkOrderExistence(orderId: number): Promise<void> {
+    if (orderId) {
+      const order = await this.prisma.order.findUnique({
+        where: {
+          id: orderId,
+        },
+      });
+
+      if (!order) {
+        throw new NotFoundException(`Order with id ${orderId} not found`);
+      }
+    }
+  }
 }

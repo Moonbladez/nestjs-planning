@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { SharedService } from 'src/shared/shared.service';
 import { CreateAssignmentDto, UpdateAssignmentDto } from './dto';
 
 @Injectable()
 export class AssignmentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private sharedService: SharedService,
+  ) {}
 
   async create(createAssignmentDto: CreateAssignmentDto) {
     const assignment = await this.prisma.assignment.create({
@@ -33,18 +37,26 @@ export class AssignmentService {
   }
 
   async update(id: number, updateAssignmentDto: UpdateAssignmentDto) {
-    const assignment = await this.prisma.assignment.update({
+    await Promise.all([
+      this.sharedService.checkOrderExistence(updateAssignmentDto.orderId),
+    ]);
+
+    const assignmentToUpdate = await this.prisma.assignment.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+
+    if (!assignmentToUpdate) {
+      throw new NotFoundException(`Assignment with id ${id} not found`);
+    }
+
+    return this.prisma.assignment.update({
       where: {
         id,
       },
       data: updateAssignmentDto,
     });
-
-    if (!assignment) {
-      throw new NotFoundException(`Assignment with id ${id} not found`);
-    }
-
-    return assignment;
   }
 
   async remove(id: number) {

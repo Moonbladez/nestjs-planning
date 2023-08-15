@@ -1,51 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { SharedService } from 'src/shared/shared.service';
 import { CreateOrderDto, UpdateOrderDto } from './dto';
 
 @Injectable()
 export class OrderService {
-  constructor(private prisma: PrismaService) {}
-
-  checkProjectExistence = async (
-    projectId: number,
-    projectType: string,
-  ): Promise<void> => {
-    if (projectId) {
-      const project = await this.prisma.project.findUnique({
-        where: {
-          id: projectId,
-        },
-      });
-
-      if (!project) {
-        throw new NotFoundException(
-          `${projectType} project with id ${projectId} not found`,
-        );
-      }
-    }
-  };
-
-  checkWhenExistence = async (whenId: number): Promise<void> => {
-    if (whenId) {
-      const when = await this.prisma.when.findUnique({
-        where: {
-          id: whenId,
-        },
-      });
-
-      if (!when) {
-        throw new NotFoundException(`When with id ${whenId} not found`);
-      }
-    }
-  };
+  constructor(
+    private prisma: PrismaService,
+    private sharedService: SharedService,
+  ) {}
 
   async create(createOrdertDto: CreateOrderDto) {
     const { fromProjectId, toProjectId, whenId } = createOrdertDto;
 
     await Promise.all([
-      this.checkWhenExistence(whenId),
-      this.checkProjectExistence(fromProjectId, 'From'),
-      this.checkProjectExistence(toProjectId, 'To'),
+      this.sharedService.checkWhenExistence(whenId),
+      this.sharedService.checkProjectExistence(fromProjectId, 'From'),
+      this.sharedService.checkProjectExistence(toProjectId, 'To'),
     ]);
 
     return this.prisma.order.create({
@@ -83,9 +54,15 @@ export class OrderService {
     }
 
     await Promise.all([
-      this.checkProjectExistence(updateOrderDto.fromProjectId, 'From'),
-      this.checkProjectExistence(updateOrderDto.toProjectId, 'To'),
-      this.checkWhenExistence(updateOrderDto.whenId),
+      this.sharedService.checkProjectExistence(
+        updateOrderDto.fromProjectId,
+        'From',
+      ),
+      this.sharedService.checkProjectExistence(
+        updateOrderDto.toProjectId,
+        'To',
+      ),
+      this.sharedService.checkWhenExistence(updateOrderDto.whenId),
     ]);
 
     return this.prisma.order.update({

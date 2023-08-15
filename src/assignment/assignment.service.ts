@@ -11,11 +11,13 @@ export class AssignmentService {
   ) {}
 
   async create(createAssignmentDto: CreateAssignmentDto) {
-    const assignment = await this.prisma.assignment.create({
+    await Promise.all([
+      this.sharedService.checkOrderExistence(createAssignmentDto.orderId),
+    ]);
+
+    return this.prisma.assignment.create({
       data: createAssignmentDto,
     });
-
-    return assignment;
   }
 
   findAll() {
@@ -43,7 +45,7 @@ export class AssignmentService {
 
     const assignmentToUpdate = await this.prisma.assignment.findUnique({
       where: {
-        id: +id,
+        id: id,
       },
     });
 

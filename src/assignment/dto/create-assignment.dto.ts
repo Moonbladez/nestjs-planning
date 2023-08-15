@@ -1,8 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ASSIGNMENT_STATUS, ASSIGNMENT_TYPE } from '@prisma/client';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsISO8601, IsOptional } from 'class-validator';
 
 export class CreateAssignmentDto {
+  @ApiProperty({
+    description: 'Date and time of the start of the assignment',
+    example: '2023-08-14T12:00:00.000Z',
+  })
+  @IsISO8601({ strict: true })
+  startTime: Date;
+
+  @ApiProperty({
+    description: 'Date and time of the assignment',
+    example: '2023-08-18T12:00:00.000Z',
+  })
+  @IsISO8601({ strict: true })
+  endTime: Date;
+
   @ApiProperty({
     description: 'The id of the order',
     type: 'number',

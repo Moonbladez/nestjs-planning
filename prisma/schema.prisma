@@ -9,6 +9,8 @@ datasource db {
 
 model Assignment {
   id      Int    @id @default(autoincrement())
+  startTime DateTime @db.Timestamp(6)
+  endTime   DateTime @db.Timestamp(6)
   orderId Int?
   order   Order? @relation(fields: [orderId], references: [id])
 

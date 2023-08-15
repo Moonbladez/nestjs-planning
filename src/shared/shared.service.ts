@@ -49,6 +49,8 @@ export class SharedService {
       if (!order) {
         throw new NotFoundException(`Order with id ${orderId} not found`);
       }
+    } else {
+      throw new NotFoundException('Order id is required');
     }
   }
 }

@@ -12,7 +12,7 @@ import { CreateVehicleDto, UpdateVehicleDto } from './dto';
 import { VehicleService } from './vehicle.service';
 
 @ApiTags('Vehicle')
-@Controller('vehicle')
+@Controller({ version: '1', path: 'vehicle' })
 export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
 

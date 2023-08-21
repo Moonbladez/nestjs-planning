@@ -12,7 +12,7 @@ import { AssignmentService } from './assignment.service';
 import { CreateAssignmentDto, UpdateAssignmentDto } from './dto';
 
 @ApiTags('Assignment')
-@Controller('assignment')
+@Controller({ version: '1', path: 'assignment' })
 export class AssignmentController {
   constructor(private readonly assignmentService: AssignmentService) {}
 

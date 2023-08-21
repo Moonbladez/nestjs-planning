@@ -13,7 +13,7 @@ import { CreateWhenDto, UpdateWhenDto } from './dto';
 import { WhenService } from './when.service';
 
 @ApiTags('When')
-@Controller('when')
+@Controller({ version: '1', path: 'when' })
 export class WhenController {
   constructor(private readonly whenService: WhenService) {}
 

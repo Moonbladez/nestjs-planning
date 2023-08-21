@@ -1,25 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateVehicleDto, UpdateVehicleDto } from './dto';
 
 @Injectable()
 export class VehicleService {
+  constructor(private readonly prisma: PrismaService) {}
   create(createVehicleDto: CreateVehicleDto) {
-    return 'This action adds a new vehicle';
+    return this.prisma.vehicle.create({ data: createVehicleDto });
   }
 
-  findAll() {
-    return `This action returns all vehicle`;
+  async findAll() {
+    return this.prisma.vehicle.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicle`;
+  async findOne(internalNumber: number) {
+    const vehicle = await this.prisma.vehicle.findUnique({
+      where: { internalNumber },
+    });
+
+    if (!vehicle) {
+      throw new NotFoundException('No vehicle found');
+    }
+
+    return vehicle;
   }
 
-  update(id: number, updateVehicleDto: UpdateVehicleDto) {
-    return `This action updates a #${id} vehicle`;
+  async update(internalNumber: number, updateVehicleDto: UpdateVehicleDto) {
+    const vehicle = await this.prisma.vehicle.findUnique({
+      where: { internalNumber },
+    });
+
+    if (!vehicle) {
+      throw new NotFoundException('No vehicle found');
+    }
+
+    return this.prisma.vehicle.update({
+      where: { internalNumber: vehicle.internalNumber },
+      data: updateVehicleDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} vehicle`;
+  async remove(internalNumber: number) {
+    const vehicle = await this.prisma.vehicle.findUnique({
+      where: { internalNumber },
+    });
+
+    if (!vehicle) {
+      throw new NotFoundException('No vehicle found');
+    }
+
+    return this.prisma.vehicle.delete({
+      where: { internalNumber: vehicle.internalNumber },
+    });
   }
 }

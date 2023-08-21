@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Order" ALTER COLUMN "date" SET DATA TYPE TIMESTAMP(6);

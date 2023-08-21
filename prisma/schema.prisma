@@ -17,6 +17,11 @@ model Assignment {
   type   ASSIGNMENT_TYPE?
   status ASSIGNMENT_STATUS @default(UnderPlanning)
 
+  fromProjectId Int?
+  fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
+  toProjectId   Int?
+  toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -51,6 +56,10 @@ model Project {
   longitude  String?
   fromOrders Order[] @relation("FromProject")
   toOrders   Order[] @relation("ToProject")
+
+  fromAssignments Assignment[] @relation("FromProject")
+  toAssignments   Assignment[] @relation("ToProject")
+  
 }
 
 model When {
@@ -59,6 +68,17 @@ model When {
   to     String?
   type   WHEN_TYPE
   orders Order[]
+}
+
+model Vehicle {
+  internalNumber Int @id @default(autoincrement())
+  registration   String
+  manufacturer   String?
+  mainCategory   String?
+  subCategory    String?
+  modelYear      String?
+  modelName     String?
+  statusName   String?
 }
 
 enum ASSIGNMENT_TYPE {

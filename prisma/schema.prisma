@@ -80,13 +80,13 @@ model Vehicle {
   modelName     String?
   statusName   String?
   driver         Driver?  @relation(fields: [driverId], references: [id])
-  driverId       Int? @unique
+  driverId       String? @unique
 }
 
 model Driver {
-  id  Int     @id @default(autoincrement()) @unique
+  id  String    @id @default(uuid())
   name String
-  vehicle Vehicle?
+  vehicle Vehicle? 
 }
 
 enum ASSIGNMENT_TYPE {

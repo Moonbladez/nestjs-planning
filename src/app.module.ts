@@ -6,6 +6,7 @@ import { ProjectModule } from './project/project.module';
 import { SharedService } from './shared/shared.service';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { WhenModule } from './when/when.module';
+import { DriverModule } from './driver/driver.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { WhenModule } from './when/when.module';
     WhenModule,
     AssignmentModule,
     VehicleModule,
+    DriverModule,
   ],
   providers: [PrismaService, SharedService],
 })

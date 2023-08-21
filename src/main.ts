@@ -18,6 +18,7 @@ async function bootstrap() {
     .addTag('Projects')
     .addTag('When')
     .addTag('Vehicle')
+    .addTag('Driver')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

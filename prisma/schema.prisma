@@ -79,6 +79,14 @@ model Vehicle {
   modelYear      String?
   modelName     String?
   statusName   String?
+  driver         Driver?  @relation(fields: [driverId], references: [id])
+  driverId       Int? @unique
+}
+
+model Driver {
+  id  Int     @id @default(autoincrement()) @unique
+  name String
+  vehicle Vehicle?
 }
 
 enum ASSIGNMENT_TYPE {

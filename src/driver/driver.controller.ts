@@ -7,10 +7,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { DriverService } from './driver.service';
 import { CreateDriverDto, UpdateDriverDto } from './dto';
 
-@Controller('driver')
+@ApiTags('Driver')
+@Controller({ version: '1', path: 'driver' })
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 

@@ -10,17 +10,17 @@ export class DriverSeedingService {
     const existingDriverCount = await this.prisma.driver.count();
 
     if (existingDriverCount === 0) {
-      const fakeProducts = Array.from({ length: 10 }, () => ({
+      const fakeDriver = Array.from({ length: 10 }, () => ({
         name: fakerNB_NO.person.fullName(),
       }));
 
-      const seededProducts = await this.prisma.driver.createMany({
-        data: fakeProducts,
+      const seededDrivers = await this.prisma.driver.createMany({
+        data: fakeDriver,
       });
 
-      console.log('Seeded products:', seededProducts);
+      console.info('Seeded drivers:', seededDrivers);
     } else {
-      console.log('Products already seeded. Skipping.');
+      console.info('Drivers already seeded. Skipping.');
     }
   }
 }

@@ -10,12 +10,15 @@ export class VehicleService {
   }
 
   async findAll() {
-    return this.prisma.vehicle.findMany();
+    return this.prisma.vehicle.findMany({
+      include: { driver: true },
+    });
   }
 
   async findOne(internalNumber: number) {
     const vehicle = await this.prisma.vehicle.findUnique({
       where: { internalNumber },
+      include: { driver: true },
     });
 
     if (!vehicle) {
@@ -28,6 +31,7 @@ export class VehicleService {
   async update(internalNumber: number, updateVehicleDto: UpdateVehicleDto) {
     const vehicle = await this.prisma.vehicle.findUnique({
       where: { internalNumber },
+      include: { driver: true },
     });
 
     if (!vehicle) {

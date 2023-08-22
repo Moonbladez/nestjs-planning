@@ -71,7 +71,7 @@ model When {
 }
 
 model Vehicle {
-  internalNumber Int @id @default(autoincrement())
+  internalNumber String  @id @default(nanoid())
   registration   String
   manufacturer   String?
   mainCategory   String?

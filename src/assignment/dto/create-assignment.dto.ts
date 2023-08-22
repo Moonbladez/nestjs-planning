@@ -23,7 +23,7 @@ export class CreateAssignmentDto {
     required: false,
   })
   @IsOptional()
-  orderId: number;
+  orderId: string;
 
   @ApiProperty({
     description: 'Type of the assignment',

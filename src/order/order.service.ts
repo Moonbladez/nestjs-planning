@@ -33,10 +33,10 @@ export class OrderService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const order = await this.prisma.order.findUnique({
       where: {
-        id: +id,
+        id,
       },
     });
 
@@ -47,10 +47,10 @@ export class OrderService {
     return order;
   }
 
-  async update(id: number, updateOrderDto: UpdateOrderDto) {
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
     const orderToUpdate = await this.prisma.order.findUnique({
       where: {
-        id: +id,
+        id,
       },
     });
 
@@ -78,10 +78,10 @@ export class OrderService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const orderToDelete = await this.prisma.order.findUnique({
       where: {
-        id: +id,
+        id,
       },
     });
 

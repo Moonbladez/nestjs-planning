@@ -29,7 +29,7 @@ export class AssignmentService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     const assignment = this.prisma.assignment.findUnique({
       where: {
         id,
@@ -43,14 +43,14 @@ export class AssignmentService {
     return assignment;
   }
 
-  async update(id: number, updateAssignmentDto: UpdateAssignmentDto) {
+  async update(id: string, updateAssignmentDto: UpdateAssignmentDto) {
     await Promise.all([
       this.sharedService.checkOrderExistence(updateAssignmentDto.orderId),
     ]);
 
     const assignmentToUpdate = await this.prisma.assignment.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
 
@@ -66,7 +66,7 @@ export class AssignmentService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const assignment = await this.prisma.assignment.findUnique({
       where: {
         id,

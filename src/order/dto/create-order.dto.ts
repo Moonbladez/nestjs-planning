@@ -9,7 +9,7 @@ export class CreateOrderDto {
     example: 1,
   })
   @IsOptional()
-  fromProjectId?: number;
+  fromProjectId?: string;
 
   @ApiProperty({
     description: 'ID of the when',
@@ -17,7 +17,7 @@ export class CreateOrderDto {
     example: 1,
   })
   @IsOptional()
-  whenId?: number;
+  whenId?: string;
 
   @ApiProperty({
     description: 'ID of the destination project',
@@ -25,7 +25,7 @@ export class CreateOrderDto {
     example: 2,
   })
   @IsOptional()
-  toProjectId?: number;
+  toProjectId?: string;
 
   @ApiProperty({
     description: 'Indicates if early delivery is required',

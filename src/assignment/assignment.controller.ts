@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { AssignmentService } from './assignment.service';
 import { CreateAssignmentDto, UpdateAssignmentDto } from './dto';
 
@@ -22,8 +24,8 @@ export class AssignmentController {
   }
 
   @Get()
-  findAll() {
-    return this.assignmentService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.assignmentService.findAll(paginationQuery);
   }
 
   @Get(':id')

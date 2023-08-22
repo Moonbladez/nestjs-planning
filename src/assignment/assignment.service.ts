@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { SharedService } from 'src/shared/shared.service';
 import { CreateAssignmentDto, UpdateAssignmentDto } from './dto';
 
@@ -20,8 +21,12 @@ export class AssignmentService {
     });
   }
 
-  findAll() {
-    return this.prisma.assignment.findMany({});
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    return this.prisma.assignment.findMany({
+      skip: offset,
+      take: limit,
+    });
   }
 
   findOne(id: number) {

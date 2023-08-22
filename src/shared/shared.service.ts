@@ -6,7 +6,7 @@ export class SharedService {
   constructor(private prisma: PrismaService) {}
 
   async checkProjectExistence(
-    projectId: number,
+    projectId: string,
     projectType: string,
   ): Promise<void> {
     if (projectId) {
@@ -24,7 +24,7 @@ export class SharedService {
     }
   }
 
-  async checkWhenExistence(whenId: number): Promise<void> {
+  async checkWhenExistence(whenId: string): Promise<void> {
     if (whenId) {
       const when = await this.prisma.when.findUnique({
         where: {
@@ -38,7 +38,7 @@ export class SharedService {
     }
   }
 
-  async checkOrderExistence(orderId: number): Promise<void> {
+  async checkOrderExistence(orderId: string): Promise<void> {
     if (orderId) {
       const order = await this.prisma.order.findUnique({
         where: {

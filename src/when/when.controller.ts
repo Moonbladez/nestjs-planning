@@ -30,17 +30,17 @@ export class WhenController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.whenService.findOne(+id);
+  findOne(@Param('id') id: string) {
+    return this.whenService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateWhenDto: UpdateWhenDto) {
-    return this.whenService.update(+id, updateWhenDto);
+  update(@Param('id') id: string, @Body() updateWhenDto: UpdateWhenDto) {
+    return this.whenService.update(id, updateWhenDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.whenService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.whenService.remove(id);
   }
 }

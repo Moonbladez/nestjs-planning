@@ -25,7 +25,7 @@ export class ProjectService {
     return projects;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const project = await this.prisma.project.findUnique({
       where: { id },
     });
@@ -37,7 +37,7 @@ export class ProjectService {
     return project;
   }
 
-  async update(id: number, updateProjectDto: UpdateProjectDto) {
+  async update(id: string, updateProjectDto: UpdateProjectDto) {
     const project = await this.prisma.project.update({
       where: { id },
       data: updateProjectDto,
@@ -50,7 +50,7 @@ export class ProjectService {
     return project;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const project = await this.prisma.project.findUnique({
       where: { id },
     });

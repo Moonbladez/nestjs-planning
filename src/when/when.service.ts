@@ -18,7 +18,7 @@ export class WhenService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const when = await this.prisma.when.findUnique({
       where: { id },
     });
@@ -30,7 +30,7 @@ export class WhenService {
     return when;
   }
 
-  async update(id: number, updateWhenDto: UpdateWhenDto) {
+  async update(id: string, updateWhenDto: UpdateWhenDto) {
     const when = await this.prisma.when.update({
       where: { id },
       data: updateWhenDto,
@@ -43,7 +43,7 @@ export class WhenService {
     return when;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const when = await this.prisma.when.findUnique({
       where: { id },
     });

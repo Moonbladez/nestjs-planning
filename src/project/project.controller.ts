@@ -34,14 +34,14 @@ export class ProjectController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get project by project number' })
-  findOne(@Param('id') id: number) {
-    return this.projectService.findOne(+id);
+  findOne(@Param('id') id: string) {
+    return this.projectService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update project by project number' })
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(+id, updateProjectDto);
+    return this.projectService.update(id, updateProjectDto);
   }
 
   @Delete(':id')
@@ -49,6 +49,6 @@ export class ProjectController {
     summary: 'Delete project by project number',
   })
   remove(@Param('id') id: string) {
-    return this.projectService.remove(+id);
+    return this.projectService.remove(id);
   }
 }

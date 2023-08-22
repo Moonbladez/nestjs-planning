@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Assignment {
-  id      Int    @id @default(autoincrement())
+  id      String    @id @default(nanoid())
   startTime DateTime @db.Timestamp(6)
   endTime   DateTime @db.Timestamp(6)
-  orderId Int?
+  orderId String?
   order   Order? @relation(fields: [orderId], references: [id])
 
   type   ASSIGNMENT_TYPE?
   status ASSIGNMENT_STATUS @default(UnderPlanning)
 
-  fromProjectId Int?
+  fromProjectId String?
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
-  toProjectId   Int?
+  toProjectId   String?
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
   createdAt DateTime @default(now())
@@ -27,7 +27,7 @@ model Assignment {
 }
 
 model Order {
-  id               Int           @id @default(autoincrement())
+  id               String           @id @default(nanoid())
   status           ORDER_STATUS  @default(Created) @map("status")
   type             ORDER_TYPE
   earlyDelivery    Boolean       @map("early_delivery")
@@ -35,12 +35,12 @@ model Order {
   vehicleType      VEHICLE_TYPE? @map("vehicle_type")
   numberOfVehicles Int?
 
-  fromProjectId Int?
-  toProjectId   Int?
+  fromProjectId String?
+  toProjectId   String?
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
-  whenId Int?
+  whenId String?
   when   When? @relation(fields: [whenId], references: [id])
 
   createdAt  DateTime     @default(now())
@@ -49,7 +49,7 @@ model Order {
 }
 
 model Project {
-  id         Int     @id @default(autoincrement())
+  id         String     @id @default(nanoid( ))
   name       String
   region     Int?
   latitude   String?
@@ -63,7 +63,7 @@ model Project {
 }
 
 model When {
-  id     Int       @id @default(autoincrement())
+  id     String      @id @default(nanoid())
   from   String?
   to     String?
   type   WHEN_TYPE

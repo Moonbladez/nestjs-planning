@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateProjectDto, UpdateProjectDto } from './dto';
 import { ProjectService } from './project.service';
 
@@ -26,8 +28,8 @@ export class ProjectController {
 
   @Get()
   @ApiOperation({ summary: 'Get all projects' })
-  findAll() {
-    return this.projectService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.projectService.findAll(paginationQuery);
   }
 
   @Get(':id')

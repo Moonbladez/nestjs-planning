@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateProjectDto, UpdateProjectDto } from './dto';
 
 @Injectable()
@@ -10,8 +11,12 @@ export class ProjectService {
     return this.prisma.project.create({ data: createProjectDto });
   }
 
-  async findAll() {
-    const projects = await this.prisma.project.findMany({});
+  async findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    const projects = await this.prisma.project.findMany({
+      take: limit,
+      skip: offset,
+    });
 
     if (!projects) {
       throw new NotFoundException('No projects found');

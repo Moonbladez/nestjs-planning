@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { OrderService } from './order.service';
 
@@ -26,8 +28,8 @@ export class OrderController {
 
   @Get()
   @ApiOperation({ summary: 'Get all orders' })
-  findAll() {
-    return this.orderService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.orderService.findAll(paginationQuery);
   }
 
   @Get(':id')

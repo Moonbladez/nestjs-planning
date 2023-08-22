@@ -29,7 +29,7 @@ export class VehicleSeedingService {
         //randomnly assign year
         if (Math.random() < 0.5) {
           vehicleData.modelYear = fakerNB_NO.date
-            .past()
+            .past({ years: 10 })
             .getFullYear()
             .toString();
         }

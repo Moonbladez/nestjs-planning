@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateDriverDto, UpdateDriverDto } from './dto';
 
 @Injectable()
@@ -9,8 +10,9 @@ export class DriverService {
     return this.prisma.driver.create({ data: createDriverDto });
   }
 
-  findAll() {
-    return this.prisma.driver.findMany();
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    return this.prisma.driver.findMany({ skip: offset, take: limit });
   }
 
   async findOne(id: string) {

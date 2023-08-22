@@ -84,7 +84,7 @@ model Vehicle {
 }
 
 model Driver {
-  id  String    @id @default(uuid())
+  id  String    @id @default(nanoid())
   name String
   vehicle Vehicle? 
 }

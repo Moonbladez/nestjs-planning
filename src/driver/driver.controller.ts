@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { DriverService } from './driver.service';
 import { CreateDriverDto, UpdateDriverDto } from './dto';
 
@@ -17,13 +19,14 @@ export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
   @Post()
+  @ApiBody({ type: CreateDriverDto })
   create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
   }
 
   @Get()
-  findAll() {
-    return this.driverService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.driverService.findAll(paginationQuery);
   }
 
   @Get(':id')

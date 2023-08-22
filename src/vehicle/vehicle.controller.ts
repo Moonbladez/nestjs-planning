@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateVehicleDto, UpdateVehicleDto } from './dto';
 import { VehicleService } from './vehicle.service';
 
@@ -22,8 +24,8 @@ export class VehicleController {
   }
 
   @Get()
-  findAll() {
-    return this.vehicleService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.vehicleService.findAll(paginationQuery);
   }
 
   @Get(':id')

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateWhenDto, UpdateWhenDto } from './dto';
 
 @Injectable()
@@ -9,14 +10,12 @@ export class WhenService {
     return this.prisma.when.create({ data: createWhenDto });
   }
 
-  async findAll() {
-    const when = this.prisma.when.findMany({});
-
-    if (!when) {
-      throw new NotFoundException('No when found');
-    }
-
-    return when;
+  async findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    return this.prisma.when.findMany({
+      take: limit,
+      skip: offset,
+    });
   }
 
   async findOne(id: number) {

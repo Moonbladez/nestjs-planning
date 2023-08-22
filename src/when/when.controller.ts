@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { PaginationQueryDto } from 'src/shared/dto';
 import { CreateWhenDto, UpdateWhenDto } from './dto';
 import { WhenService } from './when.service';
 
@@ -23,8 +25,8 @@ export class WhenController {
   }
 
   @Get()
-  findAll() {
-    return this.whenService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.whenService.findAll(paginationQuery);
   }
 
   @Get(':id')

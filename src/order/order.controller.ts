@@ -14,7 +14,7 @@ import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { OrderService } from './order.service';
 
 @Controller({ version: '1', path: 'order' })
-@ApiTags('Orders')
+@ApiTags('Order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 

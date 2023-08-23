@@ -5,6 +5,7 @@ import { OrderModule } from './order/order.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ProjectModule } from './project/project.module';
 import { SharedService } from './shared/shared.service';
+import { SuggestionModule } from './suggestion/suggestion.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { WhenModule } from './when/when.module';
 
@@ -16,6 +17,7 @@ import { WhenModule } from './when/when.module';
     AssignmentModule,
     VehicleModule,
     DriverModule,
+    SuggestionModule,
   ],
   providers: [PrismaService, SharedService],
 })

@@ -21,11 +21,12 @@ async function bootstrap() {
     .setDescription('The order API description')
     .setVersion('1.0')
     .addTag('Assignment')
-    .addTag('Orders')
-    .addTag('Projects')
-    .addTag('When')
-    .addTag('Vehicle')
     .addTag('Driver')
+    .addTag('Order')
+    .addTag('Project')
+    .addTag('Suggestion')
+    .addTag('Vehicle')
+    .addTag('When')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -81,12 +81,25 @@ model Vehicle {
   statusName   String?
   driver         Driver?  @relation(fields: [driverId], references: [id])
   driverId       String? @unique
+
+
+  
 }
 
 model Driver {
   id  String    @id @default(nanoid())
   name String
   vehicle Vehicle? 
+}
+
+model Suggestion {
+  id String @id @default(nanoid())
+  status ASSIGNMENT_STATUS @default(Suggested)
+  startTime DateTime @db.Timestamp(6)
+  endTime   DateTime @db.Timestamp(6)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum ASSIGNMENT_TYPE {

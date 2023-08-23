@@ -18,14 +18,14 @@ CREATE TYPE "WHEN_TYPE" AS ENUM ('DuringTheDay', 'Morning', 'BeforeFood', 'After
 
 -- CreateTable
 CREATE TABLE "Assignment" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "startTime" TIMESTAMP(6) NOT NULL,
     "endTime" TIMESTAMP(6) NOT NULL,
-    "orderId" INTEGER,
+    "orderId" TEXT,
     "type" "ASSIGNMENT_TYPE",
     "status" "ASSIGNMENT_STATUS" NOT NULL DEFAULT 'UnderPlanning',
-    "fromProjectId" INTEGER,
-    "toProjectId" INTEGER,
+    "fromProjectId" TEXT,
+    "toProjectId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -34,16 +34,16 @@ CREATE TABLE "Assignment" (
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "status" "ORDER_STATUS" NOT NULL DEFAULT 'Created',
     "type" "ORDER_TYPE" NOT NULL,
     "early_delivery" BOOLEAN NOT NULL,
     "date" TIMESTAMP(6) NOT NULL,
     "vehicle_type" "VEHICLE_TYPE",
     "numberOfVehicles" INTEGER,
-    "fromProjectId" INTEGER,
-    "toProjectId" INTEGER,
-    "whenId" INTEGER,
+    "fromProjectId" TEXT,
+    "toProjectId" TEXT,
+    "whenId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -52,7 +52,7 @@ CREATE TABLE "Order" (
 
 -- CreateTable
 CREATE TABLE "Project" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "region" INTEGER,
     "latitude" TEXT,
@@ -63,13 +63,39 @@ CREATE TABLE "Project" (
 
 -- CreateTable
 CREATE TABLE "When" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "from" TEXT,
     "to" TEXT,
     "type" "WHEN_TYPE" NOT NULL,
 
     CONSTRAINT "When_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "Vehicle" (
+    "internalNumber" TEXT NOT NULL,
+    "registration" TEXT NOT NULL,
+    "manufacturer" TEXT,
+    "mainCategory" TEXT,
+    "subCategory" TEXT,
+    "modelYear" TEXT,
+    "modelName" TEXT,
+    "statusName" TEXT,
+    "driverId" TEXT,
+
+    CONSTRAINT "Vehicle_pkey" PRIMARY KEY ("internalNumber")
+);
+
+-- CreateTable
+CREATE TABLE "Driver" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Driver_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Vehicle_driverId_key" ON "Vehicle"("driverId");
 
 -- AddForeignKey
 ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -88,3 +114,6 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_toProjectId_fkey" FOREIGN KEY ("toProj
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_whenId_fkey" FOREIGN KEY ("whenId") REFERENCES "When"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Vehicle" ADD CONSTRAINT "Vehicle_driverId_fkey" FOREIGN KEY ("driverId") REFERENCES "Driver"("id") ON DELETE SET NULL ON UPDATE CASCADE;

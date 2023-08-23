@@ -8,11 +8,11 @@ datasource db {
 }
 
 model Assignment {
-  id      String    @id @default(nanoid())
+  id        String   @id @default(nanoid())
   startTime DateTime @db.Timestamp(6)
   endTime   DateTime @db.Timestamp(6)
-  orderId String?
-  order   Order? @relation(fields: [orderId], references: [id])
+  orderId   String?
+  order     Order?   @relation(fields: [orderId], references: [id])
 
   type   ASSIGNMENT_TYPE?
   status ASSIGNMENT_STATUS @default(UnderPlanning)
@@ -27,7 +27,7 @@ model Assignment {
 }
 
 model Order {
-  id               String           @id @default(nanoid())
+  id               String        @id @default(nanoid())
   status           ORDER_STATUS  @default(Created) @map("status")
   type             ORDER_TYPE
   earlyDelivery    Boolean       @map("early_delivery")
@@ -41,7 +41,7 @@ model Order {
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
   whenId String?
-  when   When? @relation(fields: [whenId], references: [id])
+  when   When?   @relation(fields: [whenId], references: [id])
 
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
@@ -49,7 +49,7 @@ model Order {
 }
 
 model Project {
-  id         String     @id @default(nanoid( ))
+  id         String  @id @default(nanoid())
   name       String
   region     Int?
   latitude   String?
@@ -59,11 +59,13 @@ model Project {
 
   fromAssignments Assignment[] @relation("FromProject")
   toAssignments   Assignment[] @relation("ToProject")
-  
+
+  fromSuggestion Suggestion[] @relation("FromProject")
+  toSuggestion   Suggestion[] @relation("ToProject")
 }
 
 model When {
-  id     String      @id @default(nanoid())
+  id     String    @id @default(nanoid())
   from   String?
   to     String?
   type   WHEN_TYPE
@@ -77,26 +79,28 @@ model Vehicle {
   mainCategory   String?
   subCategory    String?
   modelYear      String?
-  modelName     String?
-  statusName   String?
-  driver         Driver?  @relation(fields: [driverId], references: [id])
+  modelName      String?
+  statusName     String?
+  driver         Driver? @relation(fields: [driverId], references: [id])
   driverId       String? @unique
-
-
-  
 }
 
 model Driver {
-  id  String    @id @default(nanoid())
-  name String
-  vehicle Vehicle? 
+  id      String   @id @default(nanoid())
+  name    String
+  vehicle Vehicle?
 }
 
 model Suggestion {
-  id String @id @default(nanoid())
-  status ASSIGNMENT_STATUS @default(Suggested)
-  startTime DateTime @db.Timestamp(6)
-  endTime   DateTime @db.Timestamp(6)
+  id        String            @id @default(nanoid())
+  status    ASSIGNMENT_STATUS @default(Suggested)
+  startTime DateTime          @db.Timestamp(6)
+  endTime   DateTime          @db.Timestamp(6)
+
+  fromProjectId String?
+  fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
+  toProjectId   String?
+  toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

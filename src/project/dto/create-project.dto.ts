@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProjectDto {
   //Project name
@@ -9,6 +9,7 @@ export class CreateProjectDto {
     required: true,
   })
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   //Project region

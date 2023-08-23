@@ -2,6 +2,7 @@ import { fakerNB_NO } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
 import { ASSIGNMENT_STATUS } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { shouldSelect } from 'src/shared/utils/should-select';
 
 @Injectable()
 export class SuggestionSeedingService {
@@ -30,26 +31,17 @@ export class SuggestionSeedingService {
           endTime: fakerNB_NO.date.future({ years: 0.5 }),
         };
 
-        if (
-          existingProjects.length > 0 &&
-          Math.random() < this.SELECTION_PROBABILITY
-        ) {
+        if (existingProjects.length > 0 && shouldSelect()) {
           suggestionData.fromProjectId =
             this.getRandomExistingItem(existingProjects).id;
         }
 
-        if (
-          existingProjects.length > 0 &&
-          Math.random() < this.SELECTION_PROBABILITY
-        ) {
+        if (existingProjects.length > 0 && shouldSelect()) {
           suggestionData.toProjectId =
             this.getRandomExistingItem(existingProjects).id;
         }
 
-        if (
-          existingOrders.length > 0 &&
-          Math.random() < this.SELECTION_PROBABILITY
-        ) {
+        if (existingOrders.length > 0 && shouldSelect()) {
           suggestionData.orderId =
             this.getRandomExistingItem(existingOrders).id;
         }

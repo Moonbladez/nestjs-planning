@@ -40,6 +40,8 @@ model Order {
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
 
+  suggestions      Suggestion[] 
+
   whenId String?
   when   When?   @relation(fields: [whenId], references: [id])
 
@@ -101,6 +103,9 @@ model Suggestion {
   fromProject   Project? @relation("FromProject", fields: [fromProjectId], references: [id])
   toProjectId   String?
   toProject     Project? @relation("ToProject", fields: [toProjectId], references: [id])
+
+  orderId String?
+  order   Order? @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

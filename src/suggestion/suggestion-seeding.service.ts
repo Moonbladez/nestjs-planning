@@ -5,43 +5,67 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SuggestionSeedingService {
+  private readonly SUGGESTION_COUNT = 10;
+  private readonly SELECTION_PROBABILITY = 0.3;
+
   constructor(private readonly prismaService: PrismaService) {}
 
-  async seed() {
-    const exsistingSuggestionCount =
-      await this.prismaService.suggestion.count();
+  private getRandomExistingItem<T>(items: T[]): T {
+    return fakerNB_NO.helpers.arrayElement(items);
+  }
+
+  async seed(): Promise<void> {
+    const existingSuggestionCount = await this.prismaService.suggestion.count();
+    if (existingSuggestionCount > 0) return;
 
     const existingProjects = await this.prismaService.project.findMany();
-    if (existingProjects.length === 0) return;
+    const existingOrders = await this.prismaService.order.findMany();
 
-    console.log(existingProjects);
-
-    if (exsistingSuggestionCount === 0) {
-      const fakeSuggestions = Array.from({ length: 10 }, () => {
+    const fakeSuggestions = Array.from(
+      { length: this.SUGGESTION_COUNT },
+      () => {
         const suggestionData: any = {
           status: ASSIGNMENT_STATUS.Suggested,
           startTime: fakerNB_NO.date.past({ years: 0.5 }),
           endTime: fakerNB_NO.date.future({ years: 0.5 }),
         };
 
-        if (Math.random() < 0.3) {
+        if (
+          existingProjects.length > 0 &&
+          Math.random() < this.SELECTION_PROBABILITY
+        ) {
           suggestionData.fromProjectId =
-            fakerNB_NO.helpers.arrayElement(existingProjects).id;
+            this.getRandomExistingItem(existingProjects).id;
         }
 
-        if (Math.random() < 0.3) {
+        if (
+          existingProjects.length > 0 &&
+          Math.random() < this.SELECTION_PROBABILITY
+        ) {
           suggestionData.toProjectId =
-            fakerNB_NO.helpers.arrayElement(existingProjects).id;
+            this.getRandomExistingItem(existingProjects).id;
+        }
+
+        if (
+          existingOrders.length > 0 &&
+          Math.random() < this.SELECTION_PROBABILITY
+        ) {
+          suggestionData.orderId =
+            this.getRandomExistingItem(existingOrders).id;
         }
 
         return suggestionData;
-      });
+      },
+    );
 
+    try {
       const seededSuggestions = await this.prismaService.suggestion.createMany({
         data: fakeSuggestions,
       });
 
       console.info('Seeded suggestions:', seededSuggestions);
+    } catch (error) {
+      console.error('Error while seeding suggestions:', error);
     }
   }
 }

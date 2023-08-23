@@ -17,6 +17,7 @@ async function bootstrap() {
 
   await driverSeedingService.seed();
   await vehicleSeedingService.seed();
+  //suggestions need projects to be seeded first
   await suggestionSeedingService.seed();
 
   const config = new DocumentBuilder()

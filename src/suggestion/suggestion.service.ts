@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ASSIGNMENT_STATUS } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from 'src/shared/dto';
 
 @Injectable()
 export class SuggestionService {
@@ -26,8 +27,12 @@ export class SuggestionService {
     await this.prismaService.suggestion.delete({ where: { id } });
   }
 
-  findAll() {
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+
     return this.prismaService.suggestion.findMany({
+      skip: offset,
+      take: limit,
       include: {
         fromProject: true,
         toProject: true,

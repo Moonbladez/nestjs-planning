@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/shared/dto';
 import { SuggestionService } from './suggestion.service';
 
 @ApiTags('Suggestion')
@@ -19,8 +20,8 @@ export class SuggestionController {
     summary: 'Get all suggestions',
   })
   @Get()
-  findAll() {
-    return this.suggestionService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.suggestionService.findAll(paginationQuery);
   }
 
   @ApiOperation({

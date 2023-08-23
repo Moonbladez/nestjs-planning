@@ -41,7 +41,6 @@ export class VehicleSeedingService {
           );
           const randomDriver = availableDrivers[randomDriverIndex];
 
-          // Remove the assigned driver from the list of available drivers
           availableDrivers.splice(randomDriverIndex, 1);
 
           vehicleData.driverId = randomDriver.id;

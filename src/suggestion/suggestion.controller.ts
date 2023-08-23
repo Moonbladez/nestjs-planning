@@ -1,25 +1,15 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateSuggestionDto } from './dto/create-suggestion.dto';
-import { UpdateSuggestionDto } from './dto/update-suggestion.dto';
 import { SuggestionService } from './suggestion.service';
 
 @ApiTags('Suggestion')
-@Controller('suggestion')
+@Controller({ path: 'suggestion', version: '1' })
 export class SuggestionController {
   constructor(private readonly suggestionService: SuggestionService) {}
 
-  @Post()
-  create(@Body() createSuggestionDto: CreateSuggestionDto) {
-    return this.suggestionService.create(createSuggestionDto);
+  @Post(':id')
+  create(@Param('id') suggestedId: string) {
+    return this.suggestionService.approve(suggestedId);
   }
 
   @Get()
@@ -29,19 +19,11 @@ export class SuggestionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.suggestionService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSuggestionDto: UpdateSuggestionDto,
-  ) {
-    return this.suggestionService.update(+id, updateSuggestionDto);
+    return this.suggestionService.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.suggestionService.remove(+id);
+    return this.suggestionService.remove(id);
   }
 }

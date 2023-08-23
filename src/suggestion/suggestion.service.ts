@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSuggestionDto } from './dto/create-suggestion.dto';
-import { UpdateSuggestionDto } from './dto/update-suggestion.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ASSIGNMENT_STATUS } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SuggestionService {
-  create(createSuggestionDto: CreateSuggestionDto) {
-    return 'This action adds a new suggestion';
+  constructor(private readonly prismaService: PrismaService) {}
+  async approve(id: string) {
+    const suggestion = await this.prismaService.suggestion.findUnique({
+      where: { id },
+    });
+
+    if (!suggestion) {
+      throw new NotFoundException(`Assignment with id ${id} not found`);
+    }
+
+    const approvedSuggestion = await this.prismaService.suggestion.update({
+      where: { id },
+      data: { status: ASSIGNMENT_STATUS.UnderPlanning },
+    });
+
+    await this.prismaService.assignment.create({
+      data: approvedSuggestion,
+    });
+
+    await this.prismaService.suggestion.delete({ where: { id } });
   }
 
   findAll() {
-    return `This action returns all suggestion`;
+    return this.prismaService.suggestion.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} suggestion`;
+  async findOne(id: string) {
+    const suggestion = await this.prismaService.suggestion.findUnique({
+      where: { id },
+    });
+
+    if (!suggestion) {
+      throw new NotFoundException(`Assignment with id ${id} not found`);
+    }
+
+    return suggestion;
   }
 
-  update(id: number, updateSuggestionDto: UpdateSuggestionDto) {
-    return `This action updates a #${id} suggestion`;
-  }
+  async remove(id: string) {
+    const suggestionToDelete = await this.prismaService.suggestion.findUnique({
+      where: { id },
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} suggestion`;
+    if (!suggestionToDelete) {
+      throw new NotFoundException(`Assignment with id ${id} not found`);
+    }
+
+    return this.prismaService.suggestion.delete({ where: { id } });
   }
 }

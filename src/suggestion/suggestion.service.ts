@@ -27,12 +27,23 @@ export class SuggestionService {
   }
 
   findAll() {
-    return this.prismaService.suggestion.findMany();
+    return this.prismaService.suggestion.findMany({
+      include: {
+        fromProject: true,
+        toProject: true,
+        order: true,
+      },
+    });
   }
 
   async findOne(id: string) {
     const suggestion = await this.prismaService.suggestion.findUnique({
       where: { id },
+      include: {
+        fromProject: true,
+        toProject: true,
+        order: true,
+      },
     });
 
     if (!suggestion) {

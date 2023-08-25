@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PaginationQueryDto } from 'src/shared/dto';
+import { PrismaService } from './../../src/prisma/prisma.service';
+import { PaginationQueryDto } from './../../src/shared/dto';
 import { CreateDriverDto, UpdateDriverDto } from './dto';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PaginationQueryDto } from 'src/shared/dto';
-import { SharedService } from 'src/shared/shared.service';
+import { SharedService } from '../../src/shared/shared.service';
+import { PrismaService } from './../../src/prisma/prisma.service';
+import { PaginationQueryDto } from './../../src/shared/dto';
 import { CreateAssignmentDto, UpdateAssignmentDto } from './dto';
 
 @Injectable()

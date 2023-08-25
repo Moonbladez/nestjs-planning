@@ -1,18 +1,50 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+<h1 align="center">Welcome to summer-project-mock 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: UNLICENSED" src="https://img.shields.io/badge/License-UNLICENSED-yellow.svg" />
+  </a>
 </p>
 
-<h2 align="center">Nest Js Planning</h2>
-<br/>
-<p>A project built with NestJs with the plan of users being able to plan drivers to projects </p>
-<br/>
+> A planning backend where vehicles and drivers can be assigned to projects
 
-![drawSQL-planning-export-2023-08-24](https://github.com/Moonbladez/nestjs-planning/assets/53820853/5370d552-0a24-4302-aefe-280eb8db742b)
+## Install
 
-![image](https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
-![image](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![image](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
-![image](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
+```sh
+npm install
+```
 
+## Usage
 
+```sh
+npm run start:dev
+```
 
+## Run tests
+
+```sh
+npm run test
+```
+
+## DB Setup
+
+```sh
+docker-compose up -d
+```
+
+### DB GUI
+
+```sh
+npx prisma studio
+```
+
+## Author
+
+👤 **Rebecca Young**
+
+- Github: [@Moonbladez](https://github.com/Moonbladez)
+- LinkedIn: [@rebecca-young83](https://linkedin.com/in/rebecca-young83)
+
+```
+
+```

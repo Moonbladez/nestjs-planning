@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DriverSeedingService } from './driver/driver-seeding.service';
 import { SuggestionSeedingService } from './suggestion/suggestion-seeding.service';
@@ -35,7 +35,14 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    customSiteTitle: 'Planning API',
+    customCss: `
+      .swagger-ui .topbar { background-color: #2196f3; } `,
+    swaggerOptions: {
+      docExpansion: 'none',
+    },
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -48,5 +55,6 @@ async function bootstrap() {
     }),
   );
   await app.listen(3000);
+  Logger.debug(`Server running on http://localhost:3000/api`, 'Bootstrap');
 }
 bootstrap();

@@ -1,5 +1,5 @@
 import { fakerNB_NO } from '@faker-js/faker';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ASSIGNMENT_STATUS } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { shouldSelect } from 'src/shared/utils/should-select';
@@ -54,10 +54,12 @@ export class SuggestionSeedingService {
       const seededSuggestions = await this.prismaService.suggestion.createMany({
         data: fakeSuggestions,
       });
-
-      console.info('Seeded suggestions:', seededSuggestions);
+      Logger.debug(
+        `Seeded ${seededSuggestions.count} suggestions`,
+        'SuggestionSeedingService',
+      );
     } catch (error) {
-      console.error('Error while seeding suggestions:', error);
+      Logger.error('Error while seeding suggestions:', error);
     }
   }
 }

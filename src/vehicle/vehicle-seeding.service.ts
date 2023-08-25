@@ -1,5 +1,5 @@
 import { fakerNB_NO } from '@faker-js/faker';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -52,10 +52,15 @@ export class VehicleSeedingService {
       const seededVehicles = await this.prismaService.vehicle.createMany({
         data: fakeVehicles,
       });
-
-      console.info('Seeded vehicles:', seededVehicles);
+      Logger.debug(
+        `Seeded ${seededVehicles.count} vehicles`,
+        'VehicleSeedingService',
+      );
     } else {
-      console.info('Vehicles already seeded. Skipping.');
+      Logger.debug(
+        'Vehicles already seeded. Skipping.',
+        'VehicleSeedingService',
+      );
     }
   }
 }
